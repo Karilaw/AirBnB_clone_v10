@@ -125,7 +125,8 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
         param_dict = {}
-        param_dict['updated_at'] = datetime.datetime.now()
+        param_dict['updated_at'] = datetime.datetime.now().strftime(
+            '%Y-%m-%dT%H:%M:%S.%f')
         for param in args[1:]:
             key, value = param.split("=")
             if value.startswith('"') and value.endswith('"'):
