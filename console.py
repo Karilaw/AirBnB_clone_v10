@@ -144,6 +144,8 @@ class HBNBCommand(cmd.Cmd):
                 except ValueError:
                     print("Invalid value for parameter '{}'".format(key))
                     return
+            if '__class__' in param_dict:
+                del param_dict['__class__']
             param_dict[key] = value
             new_instance = HBNBCommand.classes[class_name](**param_dict)
             storage.save()
