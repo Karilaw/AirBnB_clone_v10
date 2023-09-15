@@ -132,13 +132,13 @@ class HBNBCommand(cmd.Cmd):
                 try:
                     value = float(value)
                 except ValueError:
-                    print(f"Invalid value for parameter '{key}'")
+                    print("Invalid value for parameter '{}'".format(key))
                     return
             else:
                 try:
                     value = int(value)
                 except ValueError:
-                    print(f"invalid value for parameter '{key}'")
+                    print("Invalid value for parameter '{}'".format(key))
                     return
             param_dict[key] = value
             new_instance = HBNBCommand.classes[class_name](**param_dict)
