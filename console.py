@@ -116,40 +116,33 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
+        args = args.split()
         if not args:
             print("** class name missing **")
-            return
-        args = args.split()
         class_name = args[0]
-        if class_name not in HBNBCommand.classes:
+        params = args[1:]
+        if class_name not in self.classes:
             print("** class doesn't exist **")
             return
-        param_dict = {}
-        current_time = datetime.datetime.now().strftime('%Y-%m-%dT%H:%M:%S.%f')
-        param_dict['updated_at'] = current_time
-        param_dict['created_at'] = current_time
-        for param in args[1:]:
-            key, value = param.split("=")
+
+        attr_dict = {}
+        for param in params:
+            key, value = param.split('=')
             if value.startswith('"') and value.endswith('"'):
-                value = value[1:-1].replace('_', '')
+                attr_dict[key] = value[1:-1].replace('_', ' ')
             elif '.' in value:
                 try:
-                    value = float(value)
+                    attr_dict[key] = float(value)
                 except ValueError:
-                    print("Invalid value for parameter '{}'".format(key))
-                    return
+                    print(f"Invalid float value for {key}: {value}")
             else:
                 try:
-                    value = int(value)
+                    attr_dict[key] = int(value)
                 except ValueError:
-                    print("Invalid value for parameter '{}'".format(key))
-                    return
-            if '__class__' in param_dict:
-                del param_dict['__class__']
-            param_dict[key] = value
-            new_instance = HBNBCommand.classes[class_name](**param_dict)
-            storage.save()
-            print(new_instance.id)
+                    print(f"Invalid int value for {key}: {value}")
+            new_instance = self.classes[class_name](**attr_dict)
+            new_instance.save()
+            print(new_instance)
 
     def help_create(self):
         """ Help information for the create method """
