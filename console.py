@@ -129,7 +129,8 @@ class HBNBCommand(cmd.Cmd):
         for param in params:
             key, value = param.split('=')
             if value.startswith('"') and value.endswith('"'):
-                attr_dict[key] = value[1:-1].replace('_', ' ')
+                attr_dict[key] = value[1:-
+                                       1].replace('\\"', '"').replace('_', ' ')
             elif '.' in value:
                 try:
                     attr_dict[key] = float(value)
@@ -140,9 +141,9 @@ class HBNBCommand(cmd.Cmd):
                     attr_dict[key] = int(value)
                 except ValueError:
                     print(f"Invalid int value for {key}: {value}")
-            new_instance = self.classes[class_name](**attr_dict)
-            new_instance.save()
-            print(new_instance)
+        new_instance = self.classes[class_name](**attr_dict)
+        new_instance.save()
+        print(new_instance)
 
     def help_create(self):
         """ Help information for the create method """
