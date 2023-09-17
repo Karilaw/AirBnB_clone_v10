@@ -14,4 +14,11 @@ class State(BaseModel):
             self.id = str(uuid.uuid4())
 
     def __str__(self):
-        return "[State] ({}) {}".format(self.id, self.to_dict())
+        # Remove the '__class__' key from the dictionary
+        state_dict = self.to_dict()
+        state_dict.pop('__class__', None)
+
+        # Reorder the dictionary so that 'id' comes first
+        state_dict = {'id': state_dict.pop('id', None), **state_dict}
+
+        return "[State] ({}) {}".format(self.id, state_dict)
