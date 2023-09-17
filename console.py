@@ -220,9 +220,17 @@ class HBNBCommand(cmd.Cmd):
         """ Shows all objects, or all objects of a class"""
         print_list = []
 
-        for k, v in storage._FileStorage__objects.items():
-            print_list.append(str(v))
+        # Split the input arguments to get the class name
+        class_name = args.split()[0]
 
+        # Get all objects of the specified class
+        objects = storage.all(class_name)
+
+        # Append string representations of objects to print_list
+        for obj_id, obj in objects.items():
+            print_list.append(str(obj))
+
+        # Print the objects
         print(print_list)
 
     def help_all(self):
