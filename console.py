@@ -118,31 +118,45 @@ class HBNBCommand(cmd.Cmd):
         """ Create an object of any class"""
         try:
             if not args:
-                raise SyntaxError()
+                raise SyntaxError("** class name missing **")
+
             my_list = args.split(" ")
+
+            class_name = my_list[0]
+            if class_name not in ["BaseModel", "User", "State", "City", "Amenity", "Place", "Review"]:
+                raise NameError("** class doesn't exist **")
 
             params = {}
             for i in range(1, len(my_list)):
-                key, value = tuple(my_list[i].split("="))
-                if value[0] == '"':
-                    value = value.strip('"').replace('_', ' ')
+                key_value_pair = my_list[i].split("=")
+                if len(key_value_pair) != 2:
+                    continue
+
+                key, value = key_value_pair[0], key_value_pair[1]
+                if value.startswith('"') and value.endswith('"'):
+                    value = value[1:-1].replace('_', ' ').replace('\\"', '"')
+                elif '.' in value:
+                    try:
+                        value = float(value)
+                    except ValueError:
+                        continue
                 else:
                     try:
-                        value = eval(value)
-                    except (SyntaxError, ValueError):
+                        value = int(value)
+                    except ValueError:
                         continue
+
                 params[key] = value
-            if params == {}:
-                obj = eval(my_list[0])()
-            else:
-                obj = eval(my_list[0])(**params)
-                storage.new(obj)
-            print(obj.id)
+
+            obj = globals()[class_name](**params)
+            storage.new(obj)
             obj.save()
-        except SyntaxError:
-            print("** class name missing **")
-        except NameError:
-            print("** class doesn't exist **")
+            print(obj.id)
+
+        except SyntaxError as e:
+            print(e)
+        except NameError as e:
+            print(e)
 
     def help_create(self):
         """ Help information for the create method """
