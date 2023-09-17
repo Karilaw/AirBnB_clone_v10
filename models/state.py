@@ -14,4 +14,4 @@ class State(BaseModel):
             self.id = str(uuid.uuid4())
 
     def __str__(self):
-        return "State {}: {}".format(self.id, self.name)
+        return "[State] ({}) {}".format(self.id, self.to_dict())
