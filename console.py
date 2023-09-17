@@ -124,7 +124,8 @@ class HBNBCommand(cmd.Cmd):
 
             class_name = my_list[0]
             if class_name not in [
-                "BaseModel", "User", "State", "City", "Amenity", "Place", "Review"
+                "BaseModel", "User", "State", "City",
+                "Amenity", "Place", "Review"
             ]:
                 raise NameError("** class doesn't exist **")
 
