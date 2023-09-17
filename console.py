@@ -217,21 +217,16 @@ class HBNBCommand(cmd.Cmd):
         print("[Usage]: destroy <className> <objectId>\n")
 
     def do_all(self, args):
-        """ Shows all objects, or all objects of a class"""
-        print_list = []
-
-        # Split the input arguments to get the class name
-        class_name = args.split()[0]
-
-        # Get all objects of the specified class
+        """Shows all objects, or all objects of a class"""
+        class_name = args.split()[0] if args else None
         objects = storage.all(class_name)
 
-        # Append string representations of objects to print_list
-        for obj_id, obj in objects.items():
-            print_list.append(str(obj))
+        if class_name:
+            # Filter objects by class name
+            objects = {k: v for k, v in objects.items(
+            ) if v.__class__.__name__ == class_name}
 
-        # Print the objects
-        print(print_list)
+        print([str(obj) for obj in objects.values()])
 
     def help_all(self):
         """ Help information for the all command """
