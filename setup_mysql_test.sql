@@ -1,3 +1,8 @@
+ -- This script sets up a MySQL database named hbnb_test_db
+-- It assigns a password to the user and grants necessary privileges
+-- The script also grants SELECT privilege on the performance_schema
+
+
 -- create Database
 CREATE DATABASE IF NOT EXISTS hbnb_test_db;
 
